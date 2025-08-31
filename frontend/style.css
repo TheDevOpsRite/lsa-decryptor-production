@@ -1,0 +1,197 @@
+/* Feedback Popup Styles */
+.feedback-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+.feedback-popup-content {
+    background: #fff;
+    padding: 22px 18px 16px 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    min-width: 220px;
+    max-width: 320px;
+    position: relative;
+    text-align: center;
+}
+.feedback-popup-content h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #0984e3;
+}
+.feedback-popup-content input,
+.feedback-popup-content textarea {
+    width: 90%;
+    padding: 10px;
+    margin: 12px;
+    border: 1px solid #dfe6e9;
+    border-radius: 6px;
+    font-size: 15px;
+    resize: none;
+}
+.feedback-popup-content button[type="submit"] {
+    background: #0984e3;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 8px;
+}
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 28px;
+    color: #636e72;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+.close-btn:hover {
+    color: #d63031;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* avoid horizontal scrollbars from background */
+}
+body {
+    font-family: Arial, sans-serif;
+    /* Layer a translucent overlay on top of the background image so content stays readable */
+    background-color: #f5f6fa; /* fallback */
+    background-image: linear-gradient(rgba(245,246,250,0.82), rgba(245,246,250,0.82)), url('miuibgimage.png');
+    background-size: cover; /* cover ensures image fills viewport while keeping aspect */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed; /* keeps background steady behind content on desktop */
+    min-height: 100vh;
+}
+
+
+.container {
+    max-width: 500px;
+    margin: 40px auto;
+    /* background: rgba(229, 227, 227, 0.626); increased transparency so background shows through more */
+    background: transparent;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+    text-align: center;
+    backdrop-filter: blur(6px); /* subtle blur of background behind the container */
+    border: 1px solid rgba(255,255,255,0.38);
+}
+h1 {
+    color: #2d3436;
+    margin-bottom: 20px;
+}
+input[type="file"] {
+    margin-bottom: 20px;
+}
+.main-logo {
+    display: block;
+    margin: 0 auto 18px auto;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+button {
+    background: #0984e3;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+#result {
+    margin-top: 20px;
+}
+
+/* Responsive tweaks for mobile devices */
+@media (max-width: 600px) {
+    .container {
+        max-width: 92%;
+        margin: 16px auto;
+        padding: 18px;
+        border-radius: 8px;
+    }
+    .main-logo {
+        width: 110px;
+        height: 110px;
+    }
+    h1 {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+    input[type="file"] {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+    }
+    button {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+    #downloadAll, #feedbackBtn {
+        display: block;
+        width: 100%;
+        margin-top: 8px;
+    }
+    /* Floating icons: move to bottom-right and arrange horizontally on small screens */
+    .floating-stack {
+        /* move to bottom center on mobile */
+        right: auto !important;
+        left: 50% !important;
+        top: auto !important;
+        bottom: 18px !important;
+        transform: translateX(-50%) !important;
+        flex-direction: row;
+        gap: 8px;
+        align-items: center;
+    }
+    .floating-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+    }
+    .floating-icon svg { width: 18px; height: 18px; }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+    .main-logo { width: 88px; height: 88px; }
+    .floating-icon { width: 36px; height: 36px; font-size: 16px; }
+    .floating-stack { right: 10px; bottom: 12px; gap: 6px; }
+}
+
+/* Promotional note near bottom of page */
+.promo-note {
+    max-width: 720px;
+    margin: 18px auto 24px auto;
+    text-align: center;
+    color: #2d3436;
+    background: rgba(9,132,227,0.06);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+@media (max-width: 600px) {
+    .promo-note { margin: 10px 14px 14px 14px; font-size: 13px; }
+}
