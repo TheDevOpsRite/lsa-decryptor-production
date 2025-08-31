@@ -23,6 +23,21 @@ def decrypt_file(filename: str | os.PathLike):
         return aes.decrypt(file.read())
 
 
+# New: process bytes in-memory (avoid writing temp files)
+def decrypt_bytes(data: bytes) -> bytes:
+    counter = Counter.new(128, initial_value=sAesIv)
+    aes = AES.new(secretKey, mode=AES.MODE_CTR, counter=counter)
+    return aes.decrypt(data)
+
+
+def decrypt_header_bytes(data: bytes) -> bytes:
+    size = len(data)
+    header_size = max(min(1024, size), 16)
+    counter = Counter.new(128, initial_value=sAesIv)
+    aes = AES.new(secretKey, mode=AES.MODE_CTR, counter=counter)
+    return aes.decrypt(data[:header_size]) + data[header_size:]
+
+
 def main(path):
     if os.path.isdir(path):
         for filename in os.listdir(path):
