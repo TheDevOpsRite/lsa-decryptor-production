@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.stopPropagation(); // Stop the event from propagating further
         console.log('Event propagation stopped.');
 
-        resultDiv.innerHTML = '';
+        resultDiv.innerHTML = '';        
         const file = fileInput.files[0];
         if (!file) {
             resultDiv.innerHTML = '<p>Please select a .lsa or .lsav file.</p>';
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const formData = new FormData();
         formData.append('file', file);
-        try {
+    try {
             const response = await fetch('http://127.0.0.1:8000/api/decrypt', {
                 method: 'POST',
                 body: formData
@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', function() {
             link.download = outName;
             link.textContent = `Download ${outName}`;
             link.className = 'download-link';
-            resultDiv.appendChild(link);
+            resultDiv.appendChild(link);            
         } catch (err) {
-            resultDiv.innerHTML = `<p>Error decrypting ${file.name}: ${err}</p>`;
+            resultDiv.innerHTML = `<p>Error decrypting ${file.name}: ${err}</p>`;            
         }
         return false; // Explicitly prevent any default action or propagation
     });

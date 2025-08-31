@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIUI LSA Decryptor</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         /* Floating icon stack on the right side */
         .floating-stack {
@@ -21,6 +21,7 @@
             align-items: center;
             pointer-events: auto;
         }
+
         .floating-icon {
             width: 44px;
             height: 44px;
@@ -29,50 +30,68 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.14);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
             cursor: pointer;
             text-decoration: none;
             color: #111;
             font-size: 20px;
-            transition: transform 160ms cubic-bezier(.2,.9,.2,1), box-shadow 160ms ease;
+            transition: transform 160ms cubic-bezier(.2, .9, .2, 1), box-shadow 160ms ease;
         }
+
         .floating-icon:hover,
         .floating-icon:focus {
             transform: translateY(-4px) scale(1.06);
-            box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
             outline: none;
         }
+
         /* YouTube red style */
         .floating-icon.youtube {
-            background: linear-gradient(180deg,#f57878,#cc0000);
+            background: linear-gradient(180deg, #f57878, #cc0000);
             color: #fff;
         }
+
         /* Ensure SVG icons inherit the current color */
-        .floating-icon svg { display:block; fill: currentColor; }
-        .promo-note a{
+        .floating-icon svg {
+            display: block;
+            fill: currentColor;
+        }
+
+        /* Loading overlay message (hidden by default) */
+        #loadingMessage {
+            display: none;
+            margin-top: 12px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .promo-note a {
             color: #1a73e8;
             text-decoration: none;
-           
+
         }
     </style>
 </head>
 
 <body>
     <!-- Loading Screen -->
+     
     <!-- Loading Overlay -->
     <div id="loadingOverlay" style="z-index: 1000;">
         <video id="loadingVideo" src="tdrvideo cropped.mp4" autoplay muted playsinline></video>
         <span>The DevOps Rite</span>
+        <div id="loadingMessage"> Loading... <br> Please wait for 30 seconds.</div>
     </div>
 
 
     <div class="container">
         <img src="TDRcropped.jpg" alt="Channel Logo" class="main-logo">
         <h1>MIUI LSA/LSAV Decryptor</h1>
-            <div id="uploadForm">
-                <input type="file" id="fileInput" multiple accept=".lsa,.lsav">
-                <button type="button" id="decryptBtn">Decrypt Now</button>
-            </div>
+        <div id="uploadForm">
+            <input type="file" id="fileInput" multiple accept=".lsa,.lsav">
+            <button type="button" id="decryptBtn">Decrypt Now</button>
+        </div>
         <div id="result"></div>
         <button id="downloadAll" style="display:none;">Download All</button>
         <button id="feedbackBtn" type="button">Feedback</button>
@@ -155,16 +174,24 @@
     <script src="script.js"></script>
     <!-- Promotional note -->
     <div class="promo-note">
-        <p  style="color: black;">  If You want hand written notes for free, just visit <a href="https://devopsrite.vercel.app/">my website</a> and subscribe my <a href="https://www.youtube.com/@TheDevOpsRite">Youtube Channel</a> and send the screenshot and get any handwritten notes for free </p>
+        <p style="color: black;"> If You want hand written notes for free, just visit <a
+                href="https://devopsrite.vercel.app/">my website</a> and subscribe my <a
+                href="https://www.youtube.com/@TheDevOpsRite">Youtube Channel</a> and send the screenshot and get any
+            handwritten notes for free </p>
     </div>
     <!-- Floating icon stack: update hrefs below to your websites -->
     <div class="floating-stack">
-        <a id="earthLink" class="floating-icon" href="https://devopsrite.vercel.app/" target="_blank" title="Open website">🌐</a>
-        <a id="youtubeLink" class="floating-icon youtube" href="https://www.youtube.com/@TheDevOpsRite" target="_blank" title="YouTube Channel">
+        <a id="earthLink" class="floating-icon" href="https://devopsrite.vercel.app/" target="_blank"
+            title="Open website">🌐</a>
+        <a id="youtubeLink" class="floating-icon youtube" href="https://www.youtube.com/@TheDevOpsRite" target="_blank"
+            title="YouTube Channel">
             <!-- YouTube play triangle SVG for crisp icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor"
+                aria-hidden="true">
                 <path d="M10 15l5.19-3L10 9v6z"></path>
-                <path d="M23.5 6.2s-.2-1.6-.8-2.3c-.8-.8-1.7-.8-2.2-.9C16.7 2.7 12 2.7 12 2.7h-.1s-4.7 0-8.5.3c-.6.1-1.4.1-2.2.9C.9 4.6.7 6.2.7 6.2S.5 8 .5 9.7v2.6C.5 14 1 15.8 1 15.8s.2 1.6.8 2.3c.8.8 1.9.8 2.4.9 1.7.1 7.1.3 7.1.3s4.7 0 8.5-.3c.6-.1 1.4-.1 2.2-.9.6-.6.8-2.3.8-2.3s.3-2.2.3-3.9V9.7c0-1.7-.3-3.5-.3-3.5z" fill="none"></path>
+                <path
+                    d="M23.5 6.2s-.2-1.6-.8-2.3c-.8-.8-1.7-.8-2.2-.9C16.7 2.7 12 2.7 12 2.7h-.1s-4.7 0-8.5.3c-.6.1-1.4.1-2.2.9C.9 4.6.7 6.2.7 6.2S.5 8 .5 9.7v2.6C.5 14 1 15.8 1 15.8s.2 1.6.8 2.3c.8.8 1.9.8 2.4.9 1.7.1 7.1.3 7.1.3s4.7 0 8.5-.3c.6-.1 1.4-.1 2.2-.9.6-.6.8-2.3.8-2.3s.3-2.2.3-3.9V9.7c0-1.7-.3-3.5-.3-3.5z"
+                    fill="none"></path>
             </svg>
         </a>
     </div>
