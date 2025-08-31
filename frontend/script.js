@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData();
         formData.append('file', file);
     try {
-            const response = await fetch('http://127.0.0.1:8000/api/decrypt', {
+            const response = await fetch('http://127.0.0.1:8000/api/decrypt', 'https://lsa-decryptor-production.onrender.com', {
                 method: 'POST',
                 body: formData
             });
