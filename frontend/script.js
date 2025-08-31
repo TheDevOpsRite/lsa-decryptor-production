@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData();
         formData.append('file', file);
     try {
-            const response = await fetch('http://127.0.0.1:8000/api/decrypt', 'https://lsa-decryptor-production.onrender.com', {
+            // Use a single base URL. Replace with your Render URL or set via meta tag/env.
+            const base = 'https://lsa-decryptor-production.onrender.com';
+            const response = await fetch(`${base}/api/decrypt`, {
                 method: 'POST',
                 body: formData
             });
