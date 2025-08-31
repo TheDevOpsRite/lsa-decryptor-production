@@ -8,13 +8,27 @@ from decryptor import decrypt_file, decrypt_file_header, decrypt_bytes, decrypt_
 
 app = FastAPI()
 
+# Configure CORS origins from environment for flexibility in Render/Vercel deployments.
+# Set ALLOWED_ORIGINS to a comma-separated list (e.g. https://example.com,https://other.com)
+env_origins = os.getenv('ALLOWED_ORIGINS', '')
+if env_origins:
+    allow_origins = [o.strip() for o in env_origins.split(',') if o.strip()]
+else:
+    # Fallback: allow all origins during initial testing; tighten this in production.
+    allow_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://lsa-decryptor.vercel.app/" , "http://127.0.0.1:5500/frontend/index.html" , "http://127.0.0.1:5500"],  # Or specify your frontend URL
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get('/health')
+def health():
+    return {"status": "ok"}
 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 ALLOWED_EXTENSIONS = {'lsa', 'lsav'}

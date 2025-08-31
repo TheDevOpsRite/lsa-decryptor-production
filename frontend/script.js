@@ -21,9 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData();
         formData.append('file', file);
     try {
-            // Use a single base URL. Replace with your Render URL or set via meta tag/env.
-            const base = 'https://lsa-decryptor-production.onrender.com';
-            const response = await fetch(`${base}/api/decrypt`, {
+                // Determine backend base URL: prefer meta tag, then environment, then fallback
+                const metaApi = document.querySelector('meta[name="api-base"]')?.getAttribute('content') || '';
+                const envBase = ''; // placeholder if you want to inject at build time
+                const fallback = 'https://lsa-decryptor-production.onrender.com';
+                const base = (metaApi && metaApi.trim()) ? metaApi.trim() : (envBase || fallback);
+                const response = await fetch(`${base}/api/decrypt`, {
                 method: 'POST',
                 body: formData
             });
@@ -43,12 +46,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 const match = disp.match(/filename="?([^";]+)"?/);
                 if (match) outName = match[1];
             }
+            // Auto-download the decrypted file
+            const objectUrl = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
+            link.href = objectUrl;
             link.download = outName;
-            link.textContent = `Download ${outName}`;
-            link.className = 'download-link';
-            resultDiv.appendChild(link);            
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            // Keep a small download link for fallback
+            const dl = document.createElement('a');
+            dl.href = objectUrl;
+            dl.download = outName;
+            dl.textContent = `Download ${outName}`;
+            dl.className = 'download-link';
+            resultDiv.appendChild(dl);
         } catch (err) {
             resultDiv.innerHTML = `<p>Error decrypting ${file.name}: ${err}</p>`;            
         }
