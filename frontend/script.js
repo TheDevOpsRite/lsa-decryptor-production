@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('fileInput');
     const resultDiv = document.getElementById('result');
     const decryptBtn = document.getElementById('decryptBtn');
+    const overlay = document.getElementById('loadingOverlay');
+    const loadingVideo = document.getElementById('loadingVideo');
+    const loadingMessage = document.getElementById('loadingMessage');
 
     decryptBtn.addEventListener('click', async function(event) {
         event.preventDefault(); // Prevent form submission
@@ -20,6 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         const formData = new FormData();
         formData.append('file', file);
+        // Show loading overlay and play animation/video while decrypting
+        try {
+            if (overlay) overlay.style.display = 'flex';
+            if (loadingMessage) loadingMessage.style.display = 'block';
+            if (loadingVideo) {
+                try { loadingVideo.play(); } catch (e) { /* ignore */ }
+            }
+        } catch (e) { /* ignore UI errors */ }
+        // Prevent repeated clicks while processing
+        decryptBtn.disabled = true;
     try {
                 // Determine backend base URL: prefer meta tag, then environment, then fallback
                 const metaApi = document.querySelector('meta[name="api-base"]')?.getAttribute('content') || '';
@@ -95,8 +108,20 @@ document.addEventListener('DOMContentLoaded', function() {
             dl.textContent = `Download ${outName}`;
             dl.className = 'download-link';
             resultDiv.appendChild(dl);
+            // Hide loading overlay and restore UI
+            try {
+                if (overlay) overlay.style.display = 'none';
+                if (loadingVideo) { try { loadingVideo.pause(); loadingVideo.currentTime = 0; } catch (e) {} }
+            } catch (e) {}
+            decryptBtn.disabled = false;
         } catch (err) {
             resultDiv.innerHTML = `<p>Error decrypting ${file.name}: ${err}</p>`;            
+            // Hide loading overlay and restore UI on error
+            try {
+                if (overlay) overlay.style.display = 'none';
+                if (loadingVideo) { try { loadingVideo.pause(); loadingVideo.currentTime = 0; } catch (e) {} }
+            } catch (e) {}
+            decryptBtn.disabled = false;
         }
         return false; // Explicitly prevent any default action or propagation
     });
