@@ -30,7 +30,7 @@ app.add_middleware(
 def health():
     return {"status": "ok"}
 
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+MAX_FILE_SIZE = 100 * 1024 * 1024  # 100 MB
 ALLOWED_EXTENSIONS = {'lsa', 'lsav'}
 
 @app.post('/api/decrypt')
