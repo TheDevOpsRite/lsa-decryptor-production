@@ -40,11 +40,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             const blob = await response.blob();
-            let outName = file.name.replace(/\.(lsa|lsav)$/i, '.jpg');
-            const disp = response.headers.get('Content-Disposition');
-            if (disp) {
-                const match = disp.match(/filename="?([^";]+)"?/);
-                if (match) outName = match[1];
+            // Determine output filename: prefer server-provided Content-Disposition
+            // filename. If missing, infer from Content-Type / blob.type. Avoid
+            // defaulting to .jpg which caused videos to be saved as images.
+            let outName = file.name.replace(/\.(lsa|lsav)$/i, '');
+            // Prefer X-Filename header (added by server) which is easier to parse.
+            const xname = response.headers.get('X-Filename');
+            if (xname) {
+                outName = xname;
+            } else {
+                const disp = response.headers.get('Content-Disposition');
+                if (disp) {
+                    const match = disp.match(/filename="?([^";]+)"?/);
+                    if (match) outName = match[1];
+                } else {
+                // No filename header; use Content-Type / blob.type to pick an extension
+                const ct = response.headers.get('Content-Type') || '';
+                let ext = '';
+                if (ct.includes('video')) ext = '.mp4';
+                else if (ct.includes('jpeg') || ct.includes('jpg')) ext = '.jpg';
+                else if (ct.includes('png')) ext = '.png';
+                else if (ct.includes('mpeg')) ext = '.mp4';
+                else if (blob && blob.type) {
+                    if (blob.type.includes('video')) ext = '.mp4';
+                    else if (blob.type.includes('jpeg')) ext = '.jpg';
+                    else if (blob.type.includes('png')) ext = '.png';
+                }
+                outName = outName + (ext || '.bin');
+                }
+            }
+            // If the uploaded file was a .lsav and we still don't have a proper
+            // video extension, force .mp4 so the decrypted video is saved correctly.
+            const inputExt = (file.name.match(/\.([^.]+)$/) || [])[1] || '';
+            if (/lsav/i.test(inputExt)) {
+                // If outName doesn't already end with a known video ext, replace/fix it
+                if (!/\.(mp4|mkv|mov|webm)$/i.test(outName)) {
+                    // Keep base name and force .mp4
+                    const base = outName.replace(/\.[^.]+$/, '');
+                    outName = base + '.mp4';
+                }
             }
             // Auto-download the decrypted file
             const objectUrl = URL.createObjectURL(blob);
